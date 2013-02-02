@@ -15,6 +15,9 @@ Reactor::~Reactor()
   delete pmol;
 }
 
+/**
+ * Initializes the Reactor
+ */
 bool Reactor::Init()
 {
   OpenBabel::OBConversion conv;
@@ -42,6 +45,9 @@ bool Reactor::Init()
   return false;
 }
 
+/**
+ * Generates reactant and product molecules from smiles.
+ */
 bool Reactor::Structurize()
 {
   SetupMol(rmol);
@@ -49,6 +55,10 @@ bool Reactor::Structurize()
   return rmol->NumAtoms() == pmol->NumAtoms();
 }
 
+/**
+ * Generates \var numconf low-energy structure of a molecule based on a weighted rotor search. 
+ * @param mol OBMol pointer to hold the resulting structures.
+ */
 void Reactor::SetupMol(OpenBabel::OBMol* mol)
 {
   OpenBabel::OBForceField *pFF = OpenBabel::OBForceField::FindForceField("MMFF94");
@@ -65,6 +75,9 @@ void Reactor::SetupMol(OpenBabel::OBMol* mol)
   }
 }
 
+/**
+ * Reads the class maps from the input smiles stored in OBMols.
+ */
 bool Reactor::ObtainClassMaps()
 {
   ObtainClassMapForMol(rmol,&rmap);
@@ -72,6 +85,11 @@ bool Reactor::ObtainClassMaps()
   return rmap.size() == pmap.size();
 }
 
+/**
+ * Extracts the class maps for \a mol and stores them in \a mymap.
+ * @param mol OBMol pointer to the molecule of interest.
+ * @param mymap map to hold the class map.
+ */
 void Reactor::ObtainClassMapForMol(OpenBabel::OBMol* mol, map<int,int>* mymap)
 {
   int idx = -1;
